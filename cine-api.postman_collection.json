@@ -1,0 +1,176 @@
+{
+  "info": {
+    "name": "Cine API - Juan Sanhueza",
+    "description": "Colección para consumir la API REST de administración de películas y actores.\n\nVariables:\n- baseUrl: http://localhost:3000\n- idPelicula / idActor: se completan automáticamente al ejecutar los POST.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "idPelicula", "value": "" },
+    { "key": "idActor", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Ruta por defecto",
+      "item": [
+        {
+          "name": "GET / - Bienvenida",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/", "host": ["{{baseUrl}}"], "path": [""] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Películas",
+      "item": [
+        {
+          "name": "POST /api/pelicula - Crear película",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('idPelicula', pm.response.json().pelicula._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Matrix\",\n  \"generos\": [\"Ciencia ficción\", \"Acción\"],\n  \"anioEstreno\": 1999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pelicula",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pelicula"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/peliculas - Listar películas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/peliculas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "peliculas"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/pelicula/:id - Obtener por _id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/pelicula/{{idPelicula}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pelicula", "{{idPelicula}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT /api/pelicula/:id - Actualizar por _id",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anioEstreno\": 2000,\n  \"generos\": [\"Ciencia ficción\", \"Acción\", \"Culto\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pelicula/{{idPelicula}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pelicula", "{{idPelicula}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE /api/pelicula/:id - Eliminar por _id",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/pelicula/{{idPelicula}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pelicula", "{{idPelicula}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Actores",
+      "item": [
+        {
+          "name": "POST /api/actor - Crear actor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  pm.collectionVariables.set('idActor', pm.response.json().actor._id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idPelicula\": \"{{idPelicula}}\",\n  \"nombre\": \"Keanu Reeves\",\n  \"edad\": 61,\n  \"estaRetirado\": false,\n  \"premios\": [\"MTV Movie Award\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/actor",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actor"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/actores - Listar actores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/actores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actores"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/actor/:id - Obtener por _id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/actor/{{idActor}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actor", "{{idActor}}"]
+            }
+          }
+        },
+        {
+          "name": "GET /api/actores/:pelicula - Actores de una película",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/actores/{{idPelicula}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actores", "{{idPelicula}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

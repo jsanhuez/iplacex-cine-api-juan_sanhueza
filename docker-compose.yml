@@ -1,0 +1,12 @@
+services:
+  cine-api:
+    build: .
+    image: cine-api:1.0.0
+    container_name: cine-api
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
